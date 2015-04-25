@@ -45,14 +45,15 @@ names(right) <- features$V2
 right <- right[,grep("mean\\(|std\\(",names(right),value=TRUE)]
 names(right) <- tolower(gsub("-",".",gsub("\\()","",names(right))))
 train <- cbind(left,right)
-dataset <- rbind(test,train)
 
 
 # === tidy processing === #
+dataset <- rbind(test,train)
 tidy <- dataset[,colnames(dataset) != "activity_code"]
 tidy <- aggregate(tidy,by=list(tidy$subject,tidy$activity_label),FUN=mean,na.rm=T)
 tidy <- tidy[,!(colnames(tidy) %in% c("subject","activity_label"))]
 names(tidy)[1:2] <- c("subject","activity_label")
+
 
 # === export to txt === #
 rm(list=ls()[! ls() %in% c("dataset","tidy")])
